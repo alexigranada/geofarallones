@@ -11,8 +11,10 @@ import { defaults as defaultControls } from 'ol/control';
 import LC from './componentes/grupos/mapasBase';
 import { MiniMapa, MouseControlPosition, ScaleControl } from './componentes/grupos/utilidades';
 import { PlotFarallones } from './componentes/grupos/geojson';
+import Overlay from 'ol/Overlay.js';
 //import { MapBase, Grid } from './componentes/grupos/mapasBase';
 //import * as utility from './componentes/grupos/utilidades';
+
 
 /**Main Map */
 const map = new Map({
@@ -38,3 +40,66 @@ map.addControl(layerSwitcher);
 
 /**Zoom*/
 map.addControl(new ZoomSlider());
+
+/**POPUP  */
+const element = document.getElementById('popup');
+const popup = new Overlay({
+  element: element,
+  positioning: 'bottom-center',
+  stopEvent: false,
+});
+map.addOverlay(popup);
+
+let popover;
+function disposePopover() {
+  if (popover) {
+    popover.dispose();
+    popover = undefined;
+  }
+}
+
+map.on('click', function (evt) {
+  const feature = map.forEachFeatureAtPixel(evt.pixel, function(feature){
+    return feature
+  });
+  disposePopover();
+  let popover = bootstrap.Popover.getInstance(element);
+  if (!feature) {
+    return;
+  }
+  console.log(feature);
+  popup.setPosition(evt.coordinate);
+  popover = new bootstrap.Popover(element, {
+    animation: false,
+    container: element,
+    content: '<p>Nombre:</p><code>' + feature.get('nombre') + '</code>' 
+            +'<p>Categoria: </p><code>' + feature.get('categoria') + '</code>',
+    
+    html: true,
+    placement: 'top',
+    title: 'Fundación Farallones',
+  });
+  popover.show();
+  console.log('Abrir');
+});
+
+/*
+const element = popup.getElement();
+map.on('click', function (evt) {
+  const coordinate = evt.coordinate;
+  const hdms = toStringHDMS(toLonLat(coordinate));
+  popup.setPosition(coordinate);
+  let popover = bootstrap.Popover.getInstance(element);
+  if (popover) {
+    popover.dispose();
+  }
+  popover = new bootstrap.Popover(element, {
+    animation: false,
+    container: element,
+    content: '<p>The location you clicked was:</p><code>' + hdms + '</code>',
+    html: true,
+    placement: 'top',
+    title: 'Welcome to OpenLayers',
+  });
+  popover.show();
+});*/

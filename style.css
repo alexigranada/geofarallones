@@ -13,3 +13,11 @@ html, body {
   bottom: 0;
   width: 100%;*/
 }
+
+.popover-body {
+  min-width: 276px;
+}
+
+.popover-body p {
+  margin-bottom: 0;
+}
