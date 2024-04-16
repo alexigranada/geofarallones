@@ -5,8 +5,11 @@ html, body {
   height: 100%;
 }
 #map {
-  position: absolute;
+  position: relative;
+  height: 91.25%;
+  /*
+  absolute
   top: 0;
   bottom: 0;
-  width: 100%;
+  width: 100%;*/
 }

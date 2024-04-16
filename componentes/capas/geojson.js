@@ -29,4 +29,30 @@ export function PNNFarallones () {
     return vector;
 }
 
-export default PNNFarallones;
+export function AD_Pance () {
+
+  /** Cargamos los datos */
+  const vectorSource = new VectorSource({
+    url: 'Datos/geojson/Area_Drenaje_Pance.geojson',
+    format: new GeoJSON(),
+  });
+
+  /** Creamos el vector */
+  const vector = new VectorLayer({
+    source: vectorSource,
+    title: 'Cuenca rio Pance',
+    visible: true,
+    style: new Style({
+      fill: new Fill({
+        color: [0, 255, 255, 0.2] }),
+      stroke: new Stroke({
+        color: 'rgba(0, 255, 255, 1.0)',
+        width: 2,
+      }),
+    }),
+  });
+
+  return vector;
+}
+
+export default {PNNFarallones, AD_Pance};
