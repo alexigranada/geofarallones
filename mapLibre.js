@@ -63,12 +63,17 @@ map.addControl(
 map.on('load', ()=>{
     map.addSource('my_maine',{
     'type': 'geojson',
-    'data': 'Datos/geojson/Predios.geojson'
+    'data': 'Datos/geojson/PNN_Farallones.geojson'
     });
+
+    map.addSource('my_predios',{
+        'type': 'geojson',
+        'data': 'Datos/geojson/predios.geojson'
+        });
 
     map.addSource('my_drenaje',{
         'type': 'geojson',
-        'data': 'Datos/geojson/Drenaje_Principal.geojson'
+        'data': 'Datos/geojson/Drenajes_Principales.geojson'
         });
 
     map.addLayer({
@@ -78,7 +83,29 @@ map.on('load', ()=>{
         'layout': {},
         'paint': {
             'fill-color': '#00FF00',
-            'fill-opacity': 0.25,
+            'fill-opacity': 0.0,
+        } 
+    });
+
+    map.addLayer({
+        'id': 'my_predios',
+        'type': 'fill',
+        'source': 'my_predios',
+        'layout': {},
+        'paint': {
+            'fill-color': '#00FF00',
+            'fill-opacity': 0.2,
+        } 
+    });
+
+    map.addLayer({
+        'id': 'my_predios_line',
+        'type': 'line',
+        'source': 'my_predios',
+        'layout': {},
+        'paint': {
+            'line-color': '#00FF00',
+            'line-width': 1,
         } 
     });
 
@@ -100,7 +127,7 @@ map.on('load', ()=>{
         'layout': {},
         'paint': {
             'line-color': '#0033FF',
-            'line-width': 4,
+            'line-width': 2,
         } 
     });
 });
