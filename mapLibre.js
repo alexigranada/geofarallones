@@ -90,7 +90,7 @@ map.on('load', ()=>{
         'source': 'my_predios',
         'layout': {},
         'paint': {
-            'fill-color': '#00FF00',
+            'fill-color': '#66FFCC',
             'fill-opacity': 0.2,
         } 
     });
@@ -101,7 +101,7 @@ map.on('load', ()=>{
         'source': 'my_predios',
         'layout': {},
         'paint': {
-            'line-color': '#00FF00',
+            'line-color': '#66FFCC',
             'line-width': 1,
         } 
     });
@@ -176,7 +176,7 @@ map.on('load', ()=>{
 map.on('click', 'my_predios', (e) => { 
     new maplibregl.Popup()
     .setLngLat(e.lngLat)
-    .setHTML('<h4>' + 'Categoría: ' +'</h4><p>' + e.features[0].properties.categoria + '</p><h4>' + 'Nombre: ' + '</h4><p>' + e.features[0].properties.Nombre + '</p>')
+    .setHTML('<h4 class="popup_categoria">' + 'Categoría: ' +'</h4><p class="categoria_descripcion">' + e.features[0].properties.categoria + '</p><h4 class="popup_categoria">' + 'Nombre: ' + '</h4><p class="categoria_descripcion">' + e.features[0].properties.Nombre + '</p>')
     .addTo(map)
 });
 
@@ -185,7 +185,7 @@ map.on('mouseenter', 'my_layer', () => {
     map.getCanvas().style.cursor = 'puntero'; 
 }); 
 
-// Cámbialo de nuevo a un puntero cuando salga. 
+// Cámbialo de nuevo a un puntero cuando salga popup. 
 map.on('mouseleave', 'my_layer', function () { 
     map.getCanvas().style.cursor = ''; 
 }); 
@@ -244,8 +244,8 @@ map.on('mouseleave', 'my_drenaje', () => {
     popup.remove();
 });
 
-//DOT
-const size = 70;
+//DOT Para puntos de interes
+const size = 50;
 
 // implementation of StyleImageInterface to draw a pulsing dot icon on the map
 // Search for StyleImageInterface in https://maplibre.org/maplibre-gl-js/docs/API/

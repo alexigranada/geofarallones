@@ -77,3 +77,18 @@ html, body, #map {
   .right.collapsed {
     transform: translateX(295px);
   }
+
+/*Estilos Popup*/
+
+.popup_categoria {
+  font-size:small;
+}
+
+.categoria_descripcion{
+  font-size:large;
+}
+
+/*Estilo Logo*/
+.logo_farallones{
+  position:relative;
+}

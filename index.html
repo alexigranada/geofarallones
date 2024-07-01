@@ -13,11 +13,11 @@
     
   </head>
   <body>
-    <!--<header class="navbar navbar-expand-md px-5 py-0" role="navigation">
+    <header class="navbar navbar-expand-md px-5 py-0" role="navigation">
       <a class="navbar-brand" href="/"><img src="logo_web1.webp" width="70" height="70" alt="">&nbsp;Geoportal Farallones</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button> -->
+      </button>
 
       <!-- menu items that get hidden below 768px width -->
       <!--<nav class="collapse navbar-collapse" id="olmenu">
@@ -40,8 +40,8 @@
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
           </li>
         </ul>
-      </nav>
-    </header>-->
+      </nav>-->
+    </header>
 
     <div id="map">
     
@@ -80,79 +80,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> 
     <script src="https://unpkg.com/@maplibre/maplibre-gl-minimap"></script>
-    <!--<script>
-      const map = new maplibregl.Map({
-        container: 'map',
-        zoom: 12,
-        center: [-76.62, 3.33],
-        pitch: 52,
-        hash: true,
-        scaleControl: true,
-        style: {
-            version: 8,
-            sources: {
-                osm: {
-                    type: 'raster',
-                    tiles: ['https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=W5lV2tLMxZAza9GGxomX#-0.2/0.00000/5.62500'],
-                    tileSize: 256,
-                    attribution: '&copy; OpenStreetMap Contributors',
-                    maxzoom: 19
-                },
-                // Use a different source for terrain and hillshade layers, to improve render quality
-                terrainSource: {
-                    type: 'raster-dem',
-                    url: 'https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=W5lV2tLMxZAza9GGxomX',
-                    tileSize: 256,
-                }
-            },
-            layers: [
-                {
-                    id: 'osm',
-                    type: 'raster',
-                    source: 'osm'
-                }
-            ],
-            terrain: {
-                source: 'terrainSource',
-                exaggeration: 1
-            }
-        },
-        maxZoom: 18,
-        maxPitch: 85,
-});
-
-    toggleSidebar = (id) => {
-    const elem = document.getElementById(id);
-    const classes = elem.className.split(' ');
-    const collapsed = classes.indexOf('collapsed') !== -1;
-
-    const padding = {};
-
-    if (collapsed) {
-        // Remove the 'collapsed' class from the class list of the element, this sets it back to the expanded state.
-        classes.splice(classes.indexOf('collapsed'), 1);
-
-        padding[id] = 300; // In px, matches the width of the sidebars set in .sidebar CSS class
-        map.easeTo({
-            padding,
-            duration: 1000 // In ms, CSS transition duration property for the sidebar matches this value
-        });
-    } else {
-        padding[id] = 0;
-        // Add the 'collapsed' class to the class list of the element
-        classes.push('collapsed');
-
-        map.easeTo({
-            padding,
-            duration: 1000
-        });
-    }
-
-    // Update the class list on the element
-    elem.className = classes.join(' ');
-}
-
-    </script>-->
 
   </body>
 </html>
