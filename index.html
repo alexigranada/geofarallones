@@ -45,7 +45,7 @@
 
     <div id="map">
     
-      <div id="left" class="sidebar flex-center left collapsed">
+      <!--<div id="left" class="sidebar flex-center left collapsed">
         <div class="sidebar-content rounded-rect flex-center">
             Left Sidebar
             <div
@@ -56,7 +56,7 @@
             </div>
         </div>
       </div>
-      <!--<div id="right" class="sidebar flex-center right collapsed">
+      <div id="right" class="sidebar flex-center right collapsed">
           <div class="sidebar-content rounded-rect flex-center">
               Right Sidebar
               <div
@@ -75,11 +75,12 @@
       <div id="popup"></div>
     </div>
     
+    <!---->
     <script type="module" src="./mapLibre.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> 
     <script src="https://unpkg.com/@maplibre/maplibre-gl-minimap"></script>
-    <script>
+    <!--<script>
       const map = new maplibregl.Map({
         container: 'map',
         zoom: 12,
@@ -151,120 +152,7 @@
     elem.className = classes.join(' ');
 }
 
-    const size = 70;
-
-    // implementation of StyleImageInterface to draw a pulsing dot icon on the map
-    // Search for StyleImageInterface in https://maplibre.org/maplibre-gl-js/docs/API/
-    const pulsingDot = {
-        width: size,
-        height: size,
-        data: new Uint8Array(size * size * 4),
-
-        // get rendering context for the map canvas when layer is added to the map
-        onAdd () {
-            const canvas = document.createElement('canvas');
-            canvas.width = this.width;
-            canvas.height = this.height;
-            this.context = canvas.getContext('2d');
-        },
-
-        // called once before every frame where the icon will be used
-        render () {
-            const duration = 1000;
-            const t = (performance.now() % duration) / duration;
-
-            const radius = (size / 2) * 0.3;
-            const outerRadius = (size / 2) * 0.7 * t + radius;
-            const context = this.context;
-
-            // draw outer circle
-            context.clearRect(0, 0, this.width, this.height);
-            context.beginPath();
-            context.arc(
-                this.width / 2,
-                this.height / 2,
-                outerRadius,
-                0,
-                Math.PI * 2
-            );
-            context.fillStyle = `rgba(255, 200, 200,${1 - t})`;
-            context.fill();
-
-            // draw inner circle
-            context.beginPath();
-            context.arc(
-                this.width / 2,
-                this.height / 2,
-                radius,
-                0,
-                Math.PI * 2
-            );
-            context.fillStyle = 'rgba(255, 100, 100, 1)';
-            context.strokeStyle = 'white';
-            context.lineWidth = 2 + 4 * (1 - t);
-            context.fill();
-            context.stroke();
-
-            // update this image's data with data from the canvas
-            this.data = context.getImageData(
-                0,
-                0,
-                this.width,
-                this.height
-            ).data;
-
-            // continuously repaint the map, resulting in the smooth animation of the dot
-            map.triggerRepaint();
-
-            // return `true` to let the map know that the image was updated
-            return true;
-        }
-    };
-
-    map.on('load', () => {
-        map.addImage('pulsing-dot', pulsingDot, {pixelRatio: 1});
-
-        map.addSource('points', {
-            'type': 'geojson',
-            'data': {
-                'type': 'FeatureCollection',
-                'features': [
-                    {
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-76.6454, 3.3205]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-76.65, 3.333]
-                        }
-                    },
-                    {
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': [-76.665, 3.327]
-                        }
-                    }
-                ]
-            }
-        });
-        //map.addLayer({
-            //'id': 'points',
-            //'type': 'symbol',
-            //'source': 'points',
-            //'layout': {
-                //'icon-image': 'pulsing-dot'
-            //}
-        //});
-    });
-
-    </script>
-    
+    </script>-->
 
   </body>
 </html>
