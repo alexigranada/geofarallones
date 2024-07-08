@@ -39,6 +39,7 @@ const map = new maplibregl.Map({
     },
     maxZoom: 18,
     maxPitch: 85,
+
 });
 
 map.addControl(
@@ -58,6 +59,30 @@ map.addControl(
 
 //Add GeoJson
 map.on('load', ()=>{
+
+    //Add Raster
+    map.addSource('wms-test-source', {
+        'type': 'raster',
+        // use the tiles option to specify a WMS tile source URL
+        // https://maplibre.org/maplibre-style-spec/sources/
+        'tiles': ['http://44.195.98.138:8080/geoserver/farallones/wms?service=WMS&version=1.1.0&request=GetMap&layers=farallones%3A1982&srs=EPSG%3A3857&styles=&format=image%2Fpng&transparent=true&bbox={bbox-epsg-3857}&width=256&height=256'
+        ],
+        'tileSize': 256,
+        'bounds': [-76.72182325, 3.284880821, -76.623399402, 3.383541768]
+    });
+    map.addLayer(
+        {
+            'id': 'farallones-layer',
+            'type': 'raster',
+            'source': 'wms-test-source',
+            "layout": {
+                        "visibility": "visible"
+                    },
+            'paint': {}
+        },
+        //'farallones'
+    );
+
     map.addSource('my_maine',{
     'type': 'geojson',
     'data': 'Datos/geojson/PNN_Farallones.geojson'
@@ -65,7 +90,7 @@ map.on('load', ()=>{
 
     map.addSource('my_predios',{
         'type': 'geojson',
-        'data': 'Datos/geojson/predios.geojson'
+        'data': 'Datos/geojson/Predios.geojson'
         });
 
     map.addSource('my_drenaje',{
@@ -74,10 +99,12 @@ map.on('load', ()=>{
         });
 
     map.addLayer({
-        'id': 'my_layer',
+        'id': 'PNN-layer2',
         'type': 'fill',
         'source': 'my_maine',
-        'layout': {},
+        'layout': {
+            'visibility': 'none'
+        },
         'paint': {
             'fill-color': '#00FF00',
             'fill-opacity': 0.0,
@@ -85,10 +112,12 @@ map.on('load', ()=>{
     });
 
     map.addLayer({
-        'id': 'my_predios',
+        'id': 'predios-layer',
         'type': 'fill',
         'source': 'my_predios',
-        'layout': {},
+        'layout': {
+            'visibility': 'none'
+        },
         'paint': {
             'fill-color': '#66FFCC',
             'fill-opacity': 0.2,
@@ -96,10 +125,12 @@ map.on('load', ()=>{
     });
 
     map.addLayer({
-        'id': 'my_predios_line',
+        'id': 'predios-layer2',
         'type': 'line',
         'source': 'my_predios',
-        'layout': {},
+        'layout': {
+            'visibility': 'none'
+        },
         'paint': {
             'line-color': '#66FFCC',
             'line-width': 1,
@@ -107,10 +138,12 @@ map.on('load', ()=>{
     });
 
     map.addLayer({
-        'id': 'my_layer_line',
+        'id': 'PNN-layer',
         'type': 'line',
         'source': 'my_maine',
-        'layout': {},
+        'layout': {
+            'visibility': 'none'
+        },
         'paint': {
             'line-color': '#00FF00',
             'line-width': 1.5,
@@ -118,10 +151,12 @@ map.on('load', ()=>{
     });
 
     map.addLayer({
-        'id': 'my_drenaje',
+        'id': 'rios-layer',
         'type': 'line',
         'source': 'my_drenaje',
-        'layout': {},
+        'layout': {
+            'visibility': 'none'
+        },
         'paint': {
             'line-color': '#0033FF',
             'line-width': 2,
@@ -161,13 +196,16 @@ map.on('load', ()=>{
         }
     });
     map.addLayer({
-        'id': 'points',
+        'id': 'point-layer',
         'type': 'symbol',
         'source': 'points',
         'layout': {
-            'icon-image': 'pulsing-dot'
+            'icon-image': 'pulsing-dot',
+            'visibility': 'none'
         }
     });
+
+    
 
 
 });
@@ -307,3 +345,42 @@ const pulsingDot = {
     }
 };
 //END DOT
+
+//CONTROL DE CAPA
+//document.getElementById('farallonesLayerCheckbox').addEventListener('change', function(e) {
+//    if (e.target.checked) {
+//      map.setLayoutProperty('farallones-layer', 'visibility', 'visible');
+//    } else {
+//      map.setLayoutProperty('predios-layer', 'visibility', 'none');
+//    }
+//  });
+
+document.getElementById('farallonesLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'farallones-layer', e.target.checked);
+});
+
+// Evento para capa predios
+document.getElementById('prediosLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'predios-layer', e.target.checked);
+    toggleLayerVisibility(map, 'predios-layer2', e.target.checked);
+});
+
+// Evento para capa rios
+document.getElementById('riosLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'rios-layer', e.target.checked);
+});
+
+// Evento para capa PNN
+document.getElementById('PNNLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'PNN-layer', e.target.checked);
+});
+
+// Evento para capa Sitios de alerta
+document.getElementById('pointLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'point-layer', e.target.checked);
+});
+
+
+function toggleLayerVisibility(map, layerId, isVisible) {
+    map.setLayoutProperty(layerId, 'visibility', isVisible ? 'visible' : 'none');
+}
