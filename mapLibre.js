@@ -65,7 +65,7 @@ map.on('load', ()=>{
         'type': 'raster',
         // use the tiles option to specify a WMS tile source URL
         // https://maplibre.org/maplibre-style-spec/sources/
-        'tiles': ['http://44.195.98.138:8080/geoserver/farallones/wms?service=WMS&version=1.1.0&request=GetMap&layers=farallones%3A1982&srs=EPSG%3A3857&styles=&format=image%2Fpng&transparent=true&bbox={bbox-epsg-3857}&width=256&height=256'
+        'tiles': ['http://uvmanos.gisfer.net:8080/geoserver/farallones/wms?service=WMS&version=1.1.0&request=GetMap&layers=farallones%3A1982&srs=EPSG%3A3857&styles=&format=image%2Fpng&transparent=true&bbox={bbox-epsg-3857}&width=256&height=256'
         ],
         'tileSize': 256,
         'bounds': [-76.72182325, 3.284880821, -76.623399402, 3.383541768]
