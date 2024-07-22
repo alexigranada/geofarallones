@@ -15,7 +15,7 @@ export function PNNFarallones () {
     const vector = new VectorLayer({
       source: vectorSource,
       title: 'PNN Farallones de Cali',
-      visible: true,
+      visible: false,
       style: new Style({
         fill: new Fill({
           color: [0, 255, 0, 0.2] }),
@@ -41,7 +41,7 @@ export function AD_Pance () {
   const vector = new VectorLayer({
     source: vectorSource,
     title: 'Cuenca rio Pance',
-    visible: true,
+    visible: false,
     style: new Style({
       fill: new Fill({
         color: [0, 255, 255, 0.2] }),

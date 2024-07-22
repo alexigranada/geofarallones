@@ -6,6 +6,7 @@ import LayerSwitcher from 'ol-layerswitcher';
 import 'ol-layerswitcher/dist/ol-layerswitcher.css';
 import ZoomSlider from 'ol/control/ZoomSlider';
 import { defaults as defaultControls } from 'ol/control';
+
 //import { OverviewMap, ScaleLine } from 'ol/control';
 
 import LC from './componentes/grupos/mapasBase';
@@ -22,11 +23,11 @@ const map = new Map({
   target: 'map',
   layers: [ LC.MapBase(), LC.Grid(), PlotFarallones() ],
   view: new View({
-    center: [-8400000, 500000],
-    zoom: 6,
+    center: [-8537000, 371000],
+    zoom: 13.5,
     //minZoom: 9,
     //maxZoom: 13,
-    rotation: 0.5,
+    rotation: 0.0, //0.5
   })
 });
 
@@ -82,6 +83,8 @@ map.on('click', function (evt) {
   popover.show();
   console.log('Abrir');
 });
+
+
 
 /*
 const element = popup.getElement();

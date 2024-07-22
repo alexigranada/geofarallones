@@ -6,6 +6,8 @@ import XYZ from 'ol/source/XYZ';
 //import LayerGroup from 'ol/layer/Group';
 import Graticule from 'ol/layer/Graticule';
 import Stroke from 'ol/style/Stroke.js';
+import TileWMS from 'ol/source/TileWMS.js';
+import {getRenderPixel} from 'ol/render.js';
 import { BaseLayerOptions, GroupLayerOptions } from 'ol-layerswitcher';
 
 
@@ -79,10 +81,52 @@ export function MapBase () {
     })
   });
 
+  /**Imagen histórica */
+  const wmsSource = new TileWMS({
+    url: 'http://uvmanos.gisfer.net:8080/geoserver/farallones/wms',
+    params: {"LAYERS" : "farallones:1982", 'TILED': true},
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous',
+  });
+
+  const wmsLayer = new TileLayer({
+    title: 'Histórica',
+    visible: true,
+    source: wmsSource,
+  });  
+
   /**Grupo Mapas Base*/
   const baseMaps = new LayerGroup({
     title: 'Base maps',
-    layers: [terrain, osm, watercolor, toner, outdoor, satelital]
+    layers: [satelital, wmsLayer] /**terrain, osm, watercolor, toner, outdoor, */
+  });
+
+  /** Swipe */
+  const swipe = document.getElementById('swipe');
+  
+  satelital.on('prerender', function (event) {
+    const gl = event.context;
+    gl.enable(gl.SCISSOR_TEST);
+  
+    const mapSize = map.getSize(); // [width, height] in CSS pixels
+  
+    // get render coordinates and dimensions given CSS coordinates
+    const bottomLeft = getRenderPixel(event, [0, mapSize[1]]);
+    const topRight = getRenderPixel(event, [mapSize[0], 0]);
+  
+    const width = Math.round((topRight[0] - bottomLeft[0]) * (swipe.value / 100));
+    const height = topRight[1] - bottomLeft[1];
+  
+    gl.scissor(bottomLeft[0], bottomLeft[1], width, height);
+  });
+  
+  satelital.on('postrender', function (event) {
+    const gl = event.context;
+    gl.disable(gl.SCISSOR_TEST);
+  });
+  
+  swipe.addEventListener('input', function () {
+    map.render();
   });
 
   return baseMaps;
