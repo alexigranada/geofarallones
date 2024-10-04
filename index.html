@@ -26,18 +26,57 @@
         bottom: 0;
         width: 100%;
       }
-	  .header{
-		position: absolute;
-		margin: 0;
-		padding: 0px;
-		background-color: black;
-		color: white;
-		text-align: center;
-	  }
+	    
+      .header{
+		    position:relative;
+		    margin: 0;
+		    padding: 0px;
+		    background-color: rgb(14, 98, 81);
+		    color: white;
+		    text-align: center;
+        z-index: 1;
+	    }
 	  
-	  .header > h3 {
-	  
-	  }
+	    .header h4 {
+        margin: 0;
+        padding: 0.2rem;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;  
+	    }
+
+      #minimap {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        width: 150px;
+        height: 150px;
+        border: 2px solid #000;
+        z-index: 100;
+      }
+
+      .custom-popup .maplibregl-popup-content {
+        background-color: rgba(0, 66, 0, 0.8);
+        color: white;
+        padding: 5px;
+        border-radius: 3px;
+        font-family: Arial, sans-serif;
+        max-width: 300px;
+      }
+
+      .custom-popup .maplibregl-popup-tip {
+        border-top-color: rgba(0, 66, 0, 0.8);
+      }
+
+      .custom-popup h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        margin: 0;
+      }
+
+      .custom-popup p {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
     </style>
   </head>
 
@@ -67,12 +106,15 @@
     <link rel="stylesheet" href="maplibre-gl-compare.css" type="text/css" />
 	
 	<header class="header">
-		<h2>Mira como la fundación Farallones a restaurado la naturaleza, el diversos bosques </h2>
+		<h4>
+      Deslizando la flecha puedes observar como la Fundación Farallones a restaurado los bosques en la cuenca alta del río Pance, dentro del Parque Nacional Natural Farallones de Cali.
+    </h4>
     </header>
     <div id="comparison-container">
       <div id="before" class="map"></div>
       <div id="after" class="map"></div>
     </div>
+    <div id="minimap"></div>
     <script>
       var beforeMap = new maplibregl.Map({
         container: "before",
@@ -133,6 +175,53 @@
         center: [-76.6725, 3.33],
         zoom: 13.41,
       });
+
+      // CREAR MINIMAPA
+      var minimap = new maplibregl.Map({
+        container: 'minimap',
+        style: 'https://api.maptiler.com/maps/satellite/style.json?key=W5lV2tLMxZAza9GGxomX', //'https://api.maptiler.com/maps/streets/style.json?key=W5lV2tLMxZAza9GGxomX'
+        center: [-77, 3.5],
+        zoom: 6,
+        interactive: false,
+        attributionControl: false
+      });
+
+      
+
+      // Sincronizar el minimapa con el mapa principal
+      beforeMap.on('move', function() {
+        minimap.setCenter(beforeMap.getCenter());
+      });
+
+      const marker = new maplibregl.Marker({color: "#e74c3c"})
+        .setLngLat([-76.65, 3.33])
+        .addTo(minimap);
+
+      //minimap.addControl(new maplibregl.AttributionControl({
+      //  compact: true
+      //}));
+
+      minimap.on('load', () => {
+        //Vector tipo JSON
+        minimap.addSource('my_maine',{
+          'type': 'geojson',
+          'data': 'Datos/geojson/PNN_Farallones.geojson'
+        });
+
+        minimap.addLayer({
+          'id': 'PNN-layer',
+          'type': 'fill',
+          'source': 'my_maine',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'fill-color': '#00FF00',
+              'fill-opacity': 1,
+          } 
+        });
+      });
+      
 
       afterMap.on('load', ()=>{
         //Add Raster
@@ -243,6 +332,16 @@
         .setLngLat([-76.6725, 3.33])
         .setHTML('<h1>Año 1982</h1>')
         .addTo(afterMap);
+
+      const afterPopupPNN = new maplibregl.Popup({closeButton: false, className: 'custom-popup'})
+      .setLngLat([-76.64, 3.31])
+      .setHTML('<h2 class="etiqueta_FFN">Límite PNN Farallones</h2>')
+      .addTo(afterMap);
+
+      const beforePopupPNN = new maplibregl.Popup({closeButton: false, className: 'custom-popup'})
+      .setLngLat([-76.64, 3.31])
+      .setHTML('<h2>Límite PNN Farallones</h2>')
+      .addTo(beforeMap);
 
       /*beforeMap.addControl(
         new maplibregl.NavigationControl({
