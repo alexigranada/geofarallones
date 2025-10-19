@@ -65,7 +65,7 @@ map.on('load', ()=>{
         'type': 'raster',
         // use the tiles option to specify a WMS tile source URL
         // https://maplibre.org/maplibre-style-spec/sources/
-        'tiles': ['http://uvmanos.gisfer.net:8080/geoserver/farallones/wms?service=WMS&version=1.1.0&request=GetMap&layers=farallones%3A1982&srs=EPSG%3A3857&styles=&format=image%2Fpng&transparent=true&bbox={bbox-epsg-3857}&width=256&height=256'
+        'tiles': ['https://geofarallones.com/geoserver/farallones/wms?service=WMS&version=1.1.0&request=GetMap&layers=farallones%3A1982&srs=EPSG%3A3857&styles=&format=image%2Fpng&transparent=true&bbox={bbox-epsg-3857}&width=256&height=256'
         ],
         'tileSize': 256,
         'bounds': [-76.72182325, 3.284880821, -76.623399402, 3.383541768]
@@ -210,11 +210,11 @@ map.on('load', ()=>{
 
 });
 
-//Add popup
-map.on('click', 'my_predios', (e) => { 
+//Add popup para ¿?
+map.on('click', 'predios-layer', (e) => { 
     new maplibregl.Popup()
     .setLngLat(e.lngLat)
-    .setHTML('<h4 class="popup_categoria">' + 'Categoría: ' +'</h4><p class="categoria_descripcion">' + e.features[0].properties.categoria + '</p><h4 class="popup_categoria">' + 'Nombre: ' + '</h4><p class="categoria_descripcion">' + e.features[0].properties.Nombre + '</p>')
+    .setHTML('<h4 class="popup_categoria">' + 'Categoría: ' +'</h4><p class="categoria_descripcion">' + e.features[0].properties.tipo + '</p><h4 class="popup_categoria">' + 'Nombre: ' + '</h4><p class="categoria_descripcion">' + e.features[0].properties.Nombre + '</p>')
     .addTo(map)
 });
 
@@ -251,14 +251,14 @@ map.on('load', function () {
   });
 
 
-/**Display a popup on hover */
+/**Display a popup on hover visualizar rios */
 // Create a popup, but don't add it to the map yet.
 const popup = new maplibregl.Popup({
-    closeButton: false,
+    closeButton: true,
     closeOnClick: false
 });
 
-map.on('mouseenter', 'my_drenaje', (e) => {
+map.on('mouseenter', 'rios-layer', (e) => {
     // Change the cursor style as a UI indicator.
     map.getCanvas().style.cursor = 'pointer';
 
@@ -277,10 +277,10 @@ map.on('mouseenter', 'my_drenaje', (e) => {
     popup.setLngLat(coordinates[[0]]).setHTML(description).addTo(map);
 });
 
-map.on('mouseleave', 'my_drenaje', () => {
-    map.getCanvas().style.cursor = '';
-    popup.remove();
-});
+//map.on('mouseleave', 'rios-layer', () => {
+//    map.getCanvas().style.cursor = '';
+//    popup.remove();
+//});
 
 //DOT Para puntos de interes
 const size = 50;
