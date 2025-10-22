@@ -57,6 +57,35 @@ map.addControl(
     })
 );
 
+//Viaje a Home y Yotoco
+// Coordenadas y zoom de referencia
+const homeCoords = [-76.6725, 3.33];
+const homeZoom = 12.7;
+
+// Coordenadas de destino
+const gotoCoords = [-76.4, 3.80];
+const gotoZoom = 13;
+
+// Evento para volver a la vista inicial
+document.getElementById('homeBtn').addEventListener('click', () => {
+  map.flyTo({
+    center: homeCoords,
+    zoom: homeZoom,
+    speed: 0.5,       // velocidad del vuelo
+    curve: 1.5
+  });
+});
+
+// Evento para ir a otro sitio
+document.getElementById('gotoBtn').addEventListener('click', () => {
+  map.flyTo({
+    center: gotoCoords,
+    zoom: gotoZoom,
+    speed: 0.5,
+    curve: 1.5
+  });
+});
+
 //Add GeoJson
 map.on('load', ()=>{
 
@@ -70,6 +99,7 @@ map.on('load', ()=>{
         'tileSize': 256,
         'bounds': [-76.72182325, 3.284880821, -76.623399402, 3.383541768]
     });
+
     map.addLayer(
         {
             'id': 'farallones-layer',
@@ -83,6 +113,7 @@ map.on('load', ()=>{
         //'farallones'
     );
 
+    //Primero addSource. Luego addLayer
     map.addSource('my_maine',{
     'type': 'geojson',
     'data': 'Datos/geojson/PNN_Farallones.geojson'
@@ -98,6 +129,11 @@ map.on('load', ()=>{
         'data': 'Datos/geojson/Drenajes_Principales.geojson'
         });
 
+    map.addSource('data_yotoco',{
+        'type': 'geojson',
+        'data': 'Datos/geojson/Predios_Yotoco.geojson'
+        });
+    
     map.addLayer({
         'id': 'PNN-layer2',
         'type': 'fill',
@@ -162,6 +198,59 @@ map.on('load', ()=>{
             'line-width': 2,
         } 
     });
+
+    map.addLayer({
+        'id': 'predios_yotoco',
+        'type': 'fill',
+        'source': 'data_yotoco',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'fill-color': [
+              'match',
+              ['get', 'Tipo'],
+              'No propio', '#d67649a6',
+              'Propio', '#589dd6a9',
+              'En comodato', '#4daf4a',
+              /* color por defecto si no hay coincidencia */
+              '#cccccc'
+            ],
+            'fill-opacity': 0.6,
+            'fill-outline-color': '#000000'
+        } 
+    });
+
+    map.addLayer({
+        'id': 'predios_yotoco2',
+        'type': 'line',
+        'source': 'data_yotoco',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#ffffffff',
+            'line-width': 1,
+        } 
+    });
+
+    map.addSource('robleNegro', {
+      type: 'geojson',
+      data: 'Datos/geojson/Roble_Negro.geojson'  // ruta de tu archivo GeoJSON
+    });
+
+    map.addLayer({
+      id: 'roble-points',
+      type: 'circle',
+      source: 'robleNegro',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#1E8449',
+        'circle-stroke-color': '#ffffff',
+        'circle-stroke-width': 1
+      }
+    });
+
 
 
     map.addImage('pulsing-dot', pulsingDot, {pixelRatio: 1});
@@ -346,6 +435,62 @@ const pulsingDot = {
 };
 //END DOT
 
+//Capitulo Roble Negro
+map.on('load', () => {
+  map.addSource('robleNegro', {
+    type: 'geojson',
+    data: 'Datos/Roble_Negro.geojson'  // ruta de tu archivo GeoJSON
+  });
+
+  map.addLayer({
+    id: 'roble-points',
+    type: 'circle',
+    source: 'robleNegro',
+    paint: {
+      'circle-radius': 6,
+      'circle-color': '#1E8449',
+      'circle-stroke-color': '#ffffff',
+      'circle-stroke-width': 1
+    }
+  });
+});
+
+map.on('click', 'roble-points', (e) => {
+  const feature = e.features[0];
+  const props = feature.properties;
+
+  const coordinates = feature.geometry.coordinates.slice();
+  const especie = props.especie;
+  const altura = props.altura;
+  const diametro = props.diametro;
+  const edad = props.edad;
+  const foto = props.foto;
+
+  // HTML de la tarjeta
+  const popupHTML = `
+    <div style="max-width: 250px;">
+      <img src="${foto}" alt="${especie}" style="width: 100%; border-radius: 5px; margin-bottom: 8px;">
+      <h5 style="margin: 0;">${especie}</h5>
+      <p style="margin: 2px 0;"><strong>Altura:</strong> ${altura}</p>
+      <p style="margin: 2px 0;"><strong>Diámetro:</strong> ${diametro}</p>
+      <p style="margin: 2px 0;"><strong>Edad aprox.:</strong> ${edad}</p>
+    </div>
+  `;
+
+  new maplibregl.Popup({ closeButton: true, offset: 15 })
+    .setLngLat(coordinates)
+    .setHTML(popupHTML)
+    .addTo(map);
+});
+
+map.on('mouseenter', 'roble-points', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'roble-points', () => {
+  map.getCanvas().style.cursor = '';
+});
+
 //CONTROL DE CAPA
 //document.getElementById('farallonesLayerCheckbox').addEventListener('change', function(e) {
 //    if (e.target.checked) {
@@ -365,6 +510,12 @@ document.getElementById('prediosLayerCheckbox').addEventListener('change', funct
     toggleLayerVisibility(map, 'predios-layer2', e.target.checked);
 });
 
+// Evento para capa predios Yotoco
+document.getElementById('prediosYotocoLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'predios_yotoco', e.target.checked);
+    toggleLayerVisibility(map, 'predios_yotoco2', e.target.checked);
+});
+
 // Evento para capa rios
 document.getElementById('riosLayerCheckbox').addEventListener('change', function(e) {
     toggleLayerVisibility(map, 'rios-layer', e.target.checked);
@@ -378,6 +529,11 @@ document.getElementById('PNNLayerCheckbox').addEventListener('change', function(
 // Evento para capa Sitios de alerta
 document.getElementById('pointLayerCheckbox').addEventListener('change', function(e) {
     toggleLayerVisibility(map, 'point-layer', e.target.checked);
+});
+
+// Evento para capa Roble Negro
+document.getElementById('RobleLayerCheckbox').addEventListener('change', function(e) {
+    toggleLayerVisibility(map, 'roble-points', e.target.checked);
 });
 
 
