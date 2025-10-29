@@ -155,9 +155,18 @@ map.on('load', ()=>{
             'visibility': 'none'
         },
         'paint': {
-            'fill-color': '#66FFCC',
-            'fill-opacity': 0.2,
-        } 
+          'fill-color': [
+            'match',
+            ['get', 'Tipo'],
+            'No propio', '#E4080A',
+            'Propio', '#7DDA58',
+            'Nodo', '#49adffff',
+            /* color por defecto si no hay coincidencia */
+            '#cccccc'
+          ],
+          'fill-opacity': 0.6,
+          'fill-outline-color': '#000000'
+        }
     });
 
     map.addLayer({
@@ -168,7 +177,7 @@ map.on('load', ()=>{
             'visibility': 'none'
         },
         'paint': {
-            'line-color': '#66FFCC',
+            'line-color': '#ffffffff',
             'line-width': 1,
         } 
     });
@@ -303,7 +312,7 @@ map.on('load', ()=>{
 map.on('click', 'predios-layer', (e) => { 
     new maplibregl.Popup()
     .setLngLat(e.lngLat)
-    .setHTML('<h4 class="popup_categoria">' + 'Categoría: ' +'</h4><p class="categoria_descripcion">' + e.features[0].properties.tipo + '</p><h4 class="popup_categoria">' + 'Nombre: ' + '</h4><p class="categoria_descripcion">' + e.features[0].properties.Nombre + '</p>')
+    .setHTML('<h4 class="popup_categoria">' + 'Categoría: ' +'</h4><p class="categoria_descripcion">' + e.features[0].properties.Tipo + '</p><h4 class="popup_categoria">' + 'Nombre: ' + '</h4><p class="categoria_descripcion">' + e.features[0].properties.Nombre + '</p>')
     .addTo(map)
 });
 
@@ -540,3 +549,13 @@ document.getElementById('RobleLayerCheckbox').addEventListener('change', functio
 function toggleLayerVisibility(map, layerId, isVisible) {
     map.setLayoutProperty(layerId, 'visibility', isVisible ? 'visible' : 'none');
 }
+
+const legend = document.getElementById('legend');
+legend.style.display = 'none'; // oculta por defecto
+
+// Cuando activas la capa "Predios Farallones"
+document.getElementById('prediosLayerCheckbox').addEventListener('change', (e) => {
+  const visible = e.target.checked ? 'visible' : 'none';
+  map.setLayoutProperty('predios-layer', 'visibility', visible);
+  legend.style.display = e.target.checked ? 'block' : 'none';
+});

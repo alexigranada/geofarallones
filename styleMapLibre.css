@@ -118,3 +118,38 @@ html, body, #map {
 #controls button:hover {
   background-color: #159c81;
 }
+
+/*Leyenda Convenciones*/
+.legend {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  background: white;
+  padding: 10px 15px;
+  font-size: 13px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  line-height: 18px;
+  color: #333;
+  z-index: 1;
+}
+
+.legend h6 {
+  margin: 0 0 5px 0;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 6px;
+  border: 1px solid #555;
+}
