@@ -128,10 +128,71 @@
       <div><span class="legend-color" style="background-color:#cccccc"></span>Sin categoría</div>  
     </div>
 
-    <div style="display: none;">
-      <!-- Popup -->
-      <div id="popup"></div>
+    <!-- Modal para mostrar información del predio 
+    <div id="predioModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3 id="modal-title">Detalles del predio</h3>
+        <div id="modal-body"></div>
+      </div>
+    </div>-->
+
+    <!-- Modal moderno para información del predio 
+    <div id="predioModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">Detalles del predio</h3>
+          <span class="close">&times;</span>
+        </div>
+      
+        <div class="tabs">
+          <button class="tab-button active" data-tab="tab1">Datos generales</button>
+          <button class="tab-button" data-tab="tab2">Área y ubicación</button>
+          <button class="tab-button" data-tab="tab3">Mapa</button>
+        </div>
+      
+        <div class="tab-content active" id="tab1">
+          <div id="modal-general"></div>
+        </div>
+        <div class="tab-content" id="tab2">
+          <div id="modal-area"></div>
+        </div>
+        <div class="tab-content" id="tab3">
+          <div id="miniMap" style="width:100%; height:250px; border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>-->
+
+    <!-- Modal de información de predio en dos columnas -->
+    <div id="predioModal" class="modal">
+      <div class="modal-content two-column">
+        <div class="modal-header">
+          <h3 id="modal-title">Detalles del predio</h3>
+          <span class="close">&times;</span>
+        </div>
+      
+        <div class="modal-body-two">
+          <!-- Columna izquierda: datos -->
+          <div class="modal-info">
+            <h4>Información general</h4>
+            <div id="modal-general"></div>
+          
+            <h4>Área y ubicación</h4>
+            <div id="modal-area"></div>
+          </div>
+        
+          <!-- Columna derecha: mapa -->
+          <div class="modal-map">
+            <div id="miniMap" style="width:100%; height:100%; border-radius:8px;"></div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Popup
+    <div style="display: none;">
+      <div id="popup"></div>
+    </div> -->
     
     <!---->
     <script type="module" src="./mapLibre.js"></script>

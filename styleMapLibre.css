@@ -153,3 +153,235 @@ html, body, #map {
   margin-right: 6px;
   border: 1px solid #555;
 }
+
+/* MODAL 
+Fondo oscuro 
+.modal {
+  display: none; /* oculto por defecto 
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Contenedor del contenido 
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 420px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  font-family: Arial, sans-serif;
+}
+
+/* Botón de cerrar 
+.close {
+  color: #aaa;
+  float: left;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: black;
+}
+
+/* Diseño interno 
+#modal-body p {
+  margin: 6px 0;
+}
+
+#modal-body b {
+  color: #004400;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 3% auto;
+  padding: 0;
+  border-radius: 12px;
+  width: 700px;
+  max-height: 85vh;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.95);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0b6e4f;
+  color: white;
+  padding: 10px 20px;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.close {
+  font-size: 22px;
+  cursor: pointer;
+  color: white;
+}
+
+.close:hover {
+  color: #ffdddd;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  background-color: #f8f8f8;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.tab-button:hover {
+  background-color: #e7f4ef;
+}
+
+.tab-button.active {
+  background-color: #dff6ec;
+  color: #0b6e4f;
+  border-bottom: 2px solid #0b6e4f;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px 30px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+#modal-general p, #modal-area p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+#modal-general b, #modal-area b {
+  color: #0b6e4f;
+}
+
+#miniMap {
+  width: 100%;
+  height: 350px;
+  border-radius: 8px;
+}
+*/
+
+.modal-content.two-column {
+  background-color: #fff;
+  margin: 10% auto;
+  border-radius: 12px;
+  width: 900px;
+  max-width: 90vw;
+  max-height: 85vh;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0b6e4f;
+  color: white;
+  padding: 10px 20px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.close {
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.close:hover {
+  color: #ffdddd;
+}
+
+/* Cuerpo en dos columnas */
+.modal-body-two {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  min-height: 450px;
+}
+
+/* Columna izquierda (texto) */
+.modal-info {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f9faf9;
+}
+
+.modal-info h4 {
+  margin-bottom: 10px;
+  color: #0b6e4f;
+  border-bottom: 2px solid #dff6ec;
+  padding-bottom: 4px;
+}
+
+.modal-info p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+/* Columna derecha (mapa) */
+.modal-map {
+  flex: 1.2;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#miniMap {
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}

@@ -303,18 +303,217 @@ map.on('load', ()=>{
         }
     });
 
-    
+    /* Evento click sobre la capa de predios
+    map.on('click', 'predios-layer', (e) => {
+      const feature = e.features[0].properties;
+
+      // Contenido dinámico del modal
+      const modalBody = document.getElementById('modal-body');
+      modalBody.innerHTML = `
+        <p><b>Nombre:</b> ${feature.Nombre || 'Sin nombre'}</p>
+        <p><b>Número predial:</b> ${feature.NUMEPRED || 'N/A'}</p>
+        <p><b>Área (m²):</b> ${feature.AREA_M2?.toLocaleString() || 'N/A'}</p>
+        <p><b>Comuna:</b> ${feature.COMUPRED || 'N/A'}</p>
+        <p><b>Estado:</b> ${feature.ESTADO || 'N/A'}</p>
+        <p><b>Proceso:</b> ${feature.PROCESO || 'N/A'}</p>
+        <p><b>Tipo:</b> ${feature.tipo || 'N/A'}</p>
+      `;
+
+      document.getElementById('predioModal').style.display = 'block';
+    });
+
+    // Cerrar modal
+    document.querySelector('.close').onclick = function() {
+      document.getElementById('predioModal').style.display = 'none';
+    };
+
+    // Cerrar al hacer clic fuera del contenido
+    window.onclick = function(event) {
+      const modal = document.getElementById('predioModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    };*/
+
+    /* Evento click sobre predios
+    map.on('click', 'predios-layer', (e) => {
+      const feature = e.features[0];
+      const props = feature.properties;
+
+      // Mostrar modal
+      document.getElementById('predioModal').style.display = 'block';
+      document.getElementById('modal-title').textContent = props.Nombre || 'Predio sin nombre';
+
+      // Llenar pestañas
+      document.getElementById('modal-general').innerHTML = `
+        <p><b>Nombre:</b> ${props.Nombre || 'N/A'}</p>
+        <p><b>Número predial:</b> ${props.NUMEPRED || 'N/A'}</p>
+        <p><b>Tipo:</b> ${props.tipo || 'N/A'}</p>
+        <p><b>Estado:</b> ${props.ESTADO || 'N/A'}</p>
+        <p><b>Proceso:</b> ${props.PROCESO || 'N/A'}</p>
+      `;
+
+      document.getElementById('modal-area').innerHTML = `
+        <p><b>Área (m²):</b> ${props.AREA_M2?.toLocaleString() || 'N/A'}</p>
+        <p><b>Comuna:</b> ${props.COMUPRED || 'N/A'}</p>
+        <p><b>CGTO:</b> ${props.CGTO || 'N/A'}</p>
+        <p><b>Plancha:</b> ${props.PLANCHA || 'N/A'}</p>
+        <p><b>Foto aérea:</b> ${props.ID_AEROFOT || 'N/A'}</p>
+      `;
+
+      // Crear mini mapa en el modal
+      setTimeout(() => {
+        const miniMap = new maplibregl.Map({
+          container: 'miniMap',
+          style: 'https://api.maptiler.com/maps/streets/style.json?key=W5lV2tLMxZAza9GGxomX',
+          interactive: false
+        });
+
+        const geojson = {
+          type: 'FeatureCollection',
+          features: [feature]
+        };
+
+        miniMap.on('load', () => {
+          miniMap.addSource('predio', { type: 'geojson', data: geojson });
+          miniMap.addLayer({
+            id: 'predio-fill',
+            type: 'fill',
+            source: 'predio',
+            paint: {
+              'fill-color': '#2ecc71',
+              'fill-opacity': 0.5,
+              'fill-outline-color': '#27ae60'
+            }
+          });
+
+        // Obtener todas las coordenadas, sin importar si es Polygon o MultiPolygon
+        let coords = [];
+            
+        // Si es MultiPolygon
+        if (feature.geometry.type === 'MultiPolygon') {
+          feature.geometry.coordinates.forEach(polygon => {
+            polygon[0].forEach(coord => coords.push(coord));
+          });
+        }
+        // Si es Polygon
+        else if (feature.geometry.type === 'Polygon') {
+          feature.geometry.coordinates[0].forEach(coord => coords.push(coord));
+        }
+        
+        // Crear bounds y ajustarlo
+        const bounds = new maplibregl.LngLatBounds();
+        coords.forEach(coord => bounds.extend([coord[0], coord[1]]));
+        miniMap.fitBounds(bounds, { padding: 20 });
+        });
+      }, 200);
+    });*/
+    map.on('click', 'predios-layer', (e) => {
+  const feature = e.features[0];
+  const props = feature.properties;
+
+  // Mostrar modal
+  document.getElementById('predioModal').style.display = 'block';
+  document.getElementById('modal-title').textContent = props.Nombre || 'Predio sin nombre';
+
+  // Llenar información
+  document.getElementById('modal-general').innerHTML = `
+    <p><b>Nombre:</b> ${props.Nombre || 'N/A'}</p>
+    <p><b>Número predial:</b> ${props.NUMEPRED || 'N/A'}</p>
+    <p><b>Tipo:</b> ${props.tipo || 'N/A'}</p>
+    <p><b>Estado:</b> ${props.ESTADO || 'N/A'}</p>
+    <p><b>Proceso:</b> ${props.PROCESO || 'N/A'}</p>
+  `;
+
+  document.getElementById('modal-area').innerHTML = `
+    <p><b>Área (m²):</b> ${props.AREA_M2?.toLocaleString() || 'N/A'}</p>
+    <p><b>Comuna:</b> ${props.COMUPRED || 'N/A'}</p>
+    <p><b>CGTO:</b> ${props.CGTO || 'N/A'}</p>
+    <p><b>Plancha:</b> ${props.PLANCHA || 'N/A'}</p>
+    <p><b>Foto aérea:</b> ${props.ID_AEROFOT || 'N/A'}</p>
+  `;
+
+  // Crear mini mapa en el modal
+  setTimeout(() => {
+    const miniMap = new maplibregl.Map({
+      container: 'miniMap',
+      style: 'https://api.maptiler.com/maps/streets/style.json?key=W5lV2tLMxZAza9GGxomX',
+      interactive: false
+    });
+
+    const geojson = {
+      type: 'FeatureCollection',
+      features: [feature]
+    };
+
+    miniMap.on('load', () => {
+      miniMap.addSource('predio', { type: 'geojson', data: geojson });
+      miniMap.addLayer({
+        id: 'predio-fill',
+        type: 'fill',
+        source: 'predio',
+        paint: {
+          'fill-color': '#2ecc71',
+          'fill-opacity': 0.5,
+          'fill-outline-color': '#27ae60'
+        }
+      });
+
+      // Obtener límites del polígono (compatible con Polygon y MultiPolygon)
+      let coords = [];
+      if (feature.geometry.type === 'MultiPolygon') {
+        feature.geometry.coordinates.forEach(polygon => polygon[0].forEach(c => coords.push(c)));
+      } else if (feature.geometry.type === 'Polygon') {
+        feature.geometry.coordinates[0].forEach(c => coords.push(c));
+      }
+
+      const bounds = new maplibregl.LngLatBounds();
+      coords.forEach(c => bounds.extend([c[0], c[1]]));
+
+      miniMap.fitBounds(bounds, { padding: 20 });
+
+      // Agregar marcador con nombre del predio
+      new maplibregl.Marker({ color: '#0b6e4f' })
+        .setLngLat(bounds.getCenter())
+        .setPopup(new maplibregl.Popup({ offset: 25 }).setText(props.Nombre || 'Predio'))
+        .addTo(miniMap);
+    });
+  }, 200);
+});     
 
 
+// Cerrar modal
+document.querySelector('.close').onclick = () => {
+  document.getElementById('predioModal').style.display = 'none';
+};
+
+// Cerrar al hacer clic fuera
+window.onclick = (event) => {
+  const modal = document.getElementById('predioModal');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+};
+
+// Cambiar pestañas
+document.querySelectorAll('.tab-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
 });
 
-//Add popup para ¿?
+/*Add popup para
 map.on('click', 'predios-layer', (e) => { 
     new maplibregl.Popup()
     .setLngLat(e.lngLat)
     .setHTML('<h4 class="popup_categoria">' + 'Categoría: ' +'</h4><p class="categoria_descripcion">' + e.features[0].properties.Tipo + '</p><h4 class="popup_categoria">' + 'Nombre: ' + '</h4><p class="categoria_descripcion">' + e.features[0].properties.Nombre + '</p>')
     .addTo(map)
-});
+});*/
 
 //Cambiar Cursor
 map.on('mouseenter', 'my_layer', () => { 
